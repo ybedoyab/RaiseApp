@@ -1,0 +1,47 @@
+.todo{
+    color:#FFFFFF;
+    display:flex;
+    flex-direction: column;
+    gap:2.125rem;
+    align-items: center;
+    margin-bottom: 3rem;;
+    .titulo-contactanos{
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .descripcion{
+        font-size:1.75rem;
+        text-align: center;
+    }
+    .abajo{
+        display:flex;
+        justify-content: space-evenly;
+        gap:6.625rem;
+        display:flex;
+        align-items: center;
+        .izq{
+            font-size:1.75rem ;
+            line-height: 3.5rem;
+            
+        }
+
+        .mapa{
+            height: 32.5rem;
+            width: 37.813rem;
+            
+            
+        }
+    }
+
+
+}
+
+@media (max-width: 480px){
+    .abajo{
+        display: flex;
+        flex-direction: column;
+    }
+
+
+}
