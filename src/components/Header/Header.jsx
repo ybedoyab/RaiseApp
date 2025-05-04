@@ -8,13 +8,13 @@ function Header(){
         <>
         <div className='header'>
             <div className='titulos-header'>
-            <p className='titulo-header'><span className='amarillo'>Unleash</span> Local Dreams. <br/>
-            <span className='amarillo'>Empower</span> Your Community.</p>
-            <p className='subtitulo-header'>Invest in the future of your city with secure, blockchain-powered funding.</p>
+            <p className='titulo-header'><span className='amarillo'>Libera</span> Sueños Locales. <br/>
+            <span className='amarillo'>Potencia</span> Tu Comunidad.</p>
+            <p className='subtitulo-header'>Invierte en el futuro de tu ciudad con financiamiento seguro basado en blockchain.</p>
             </div>
-            <Link to={"/Explore"}className='explore-boton'>Explore</Link>
+            <Link to={"/Explore"}className='explore-boton'>Explorar</Link>
         </div>
-        <p className='texto-abajo'>Join the movement. Build a stronger tomorrow. Together.</p>
+        <p className='texto-abajo'>Únete al movimiento. Construye un mañana más fuerte. Juntos.</p>
         </>
     );
 }

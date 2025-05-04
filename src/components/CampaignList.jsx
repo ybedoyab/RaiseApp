@@ -138,92 +138,94 @@ const CampaignList = () => {
   };
 
   return (
-    <Box p={6}>
-      <Heading mb={6}>Campañas de Inversión</Heading>
-      
-      {loading ? (
-        <Text>Cargando campañas...</Text>
-      ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {campaigns.map((campaign) => {
-            const status = getCampaignStatus(campaign);
-            const progress = calculateProgress(campaign.amountRaised, campaign.fundingGoal);
-            
-            return (
-              <Box
-                key={campaign.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                p={4}
-                _hover={{ shadow: 'md' }}
-              >
-                <VStack align="stretch" spacing={3}>
-                  <Heading size="md">{campaign.title}</Heading>
-                  <Text noOfLines={2}>{campaign.description}</Text>
-                  
-                  <HStack justify="space-between">
-                    <Text>Meta: {ethers.utils.formatEther(campaign.fundingGoal)} ETH</Text>
-                    <Badge colorScheme={getStatusColor(status)}>{status}</Badge>
-                  </HStack>
-                  
-                  <Box>
-                    <Text mb={2}>Progreso</Text>
-                    <Progress value={progress} colorScheme="blue" />
-                  </Box>
-                  
-                  <Text>
-                    Recaudado: {ethers.utils.formatEther(campaign.amountRaised)} ETH
-                  </Text>
-                  
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => openInvestModal(campaign)}
-                    isDisabled={status !== 'Activa'}
-                  >
-                    Invertir
-                  </Button>
-                </VStack>
-              </Box>
-            );
-          })}
-        </SimpleGrid>
-      )}
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Invertir en {selectedCampaign?.title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <VStack spacing={4}>
-              <FormControl>
-                <FormLabel>Cantidad a invertir (ETH)</FormLabel>
-                <NumberInput
-                  min={0}
-                  value={investmentAmount}
-                  onChange={(value) => setInvestmentAmount(value)}
-                >
-                  <NumberInputField placeholder="Cantidad en ETH" />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
+    <div style={{ paddingTop: '7rem' }}>
+      <Box p={6}>
+        <Heading mb={6}>Campañas de Inversión</Heading>
+        
+        {loading ? (
+          <Text>Cargando campañas...</Text>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+            {campaigns.map((campaign) => {
+              const status = getCampaignStatus(campaign);
+              const progress = calculateProgress(campaign.amountRaised, campaign.fundingGoal);
               
-              <Button
-                colorScheme="blue"
-                width="full"
-                onClick={handleInvest}
-                isDisabled={!investmentAmount}
-              >
-                Confirmar Inversión
-              </Button>
-            </VStack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Box>
+              return (
+                <Box
+                  key={campaign.id}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  p={4}
+                  _hover={{ shadow: 'md' }}
+                >
+                  <VStack align="stretch" spacing={3}>
+                    <Heading size="md">{campaign.title}</Heading>
+                    <Text noOfLines={2}>{campaign.description}</Text>
+                    
+                    <HStack justify="space-between">
+                      <Text>Meta: {ethers.utils.formatEther(campaign.fundingGoal)} ETH</Text>
+                      <Badge colorScheme={getStatusColor(status)}>{status}</Badge>
+                    </HStack>
+                    
+                    <Box>
+                      <Text mb={2}>Progreso</Text>
+                      <Progress value={progress} colorScheme="blue" />
+                    </Box>
+                    
+                    <Text>
+                      Recaudado: {ethers.utils.formatEther(campaign.amountRaised)} ETH
+                    </Text>
+                    
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => openInvestModal(campaign)}
+                      isDisabled={status !== 'Activa'}
+                    >
+                      Invertir
+                    </Button>
+                  </VStack>
+                </Box>
+              );
+            })}
+          </SimpleGrid>
+        )}
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Invertir en {selectedCampaign?.title}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <VStack spacing={4}>
+                <FormControl>
+                  <FormLabel>Cantidad a invertir (ETH)</FormLabel>
+                  <NumberInput
+                    min={0}
+                    value={investmentAmount}
+                    onChange={(value) => setInvestmentAmount(value)}
+                  >
+                    <NumberInputField placeholder="Cantidad en ETH" />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+                
+                <Button
+                  colorScheme="blue"
+                  width="full"
+                  onClick={handleInvest}
+                  isDisabled={!investmentAmount}
+                >
+                  Confirmar Inversión
+                </Button>
+              </VStack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
+    </div>
   );
 };
 

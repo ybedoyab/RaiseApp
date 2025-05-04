@@ -23,6 +23,7 @@ import About from '../../components/About/About'
 import Nav from '../../components/Nav/Nav'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
+import Carousel from '../../components/Carousel/Carousel'
 
 const Home = () => {
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
@@ -36,16 +37,13 @@ const Home = () => {
   const loadFeaturedCampaigns = async () => {
     try {
       setLoading(true);
-      console.log('Llamando a getCampaignCount...');
       const campaignCount = await contractService.getCampaignCount();
-      console.log('Cantidad de campañas:', campaignCount);
       const campaigns = [];
 
       // Get the last 3 active campaigns
       for (let i = Math.max(0, campaignCount - 3); i < campaignCount; i++) {
         try {
           const campaign = await contractService.getCampaignDetails(i);
-          console.log('Campaña destacada cargada:', campaign);
           const now = Math.floor(Date.now() / 1000);
           // Only include active campaigns
           if (campaign.endTime.toNumber() > now) {
@@ -60,7 +58,6 @@ const Home = () => {
       }
 
       setFeaturedCampaigns(campaigns);
-      console.log('Campañas destacadas finales:', campaigns);
     } catch (error) {
       console.error('Error loading featured campaigns:', error);
     } finally {
@@ -89,58 +86,19 @@ const Home = () => {
     }
   };
 
-  return (
-    <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={useColorModeValue('gray.700', 'gray.200')}
-      >
-        <Container maxW={'7xl'} py={16} as={Stack} spacing={12}>
-          <Stack spacing={4} align={'center'} textAlign={'center'}>
-            <Heading
-              fontWeight={600}
-              fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-              lineHeight={'110%'}
-            >
-              Invierte en el futuro de{' '}
-              <Text as={'span'} color={'blue.400'}>
-                emprendimientos
-              </Text>
-            </Heading>
-            <Text color={'gray.500'} maxW={'3xl'}>
-              Descubre y apoya proyectos innovadores. Conecta con emprendedores y
-              forma parte de su éxito a través de inversiones directas.
-            </Text>
-            <Stack spacing={6} direction={'row'}>
-              <Button
-                as={RouterLink}
-                to="/campaigns"
-                rounded={'full'}
-                px={6}
-                colorScheme={'blue'}
-                bg={'blue.400'}
-                _hover={{ bg: 'blue.500' }}
-              >
-                Explorar Campañas
-              </Button>
-              {address && (
-                <Button
-                  as={RouterLink}
-                  to="/campaigns/create"
-                  rounded={'full'}
-                  px={6}
-                >
-                  Crear Campaña
-                </Button>
-              )}
-            </Stack>
-          </Stack>
-        </Container>
-      </Box>
+  const calculateProgress = (amountRaised, fundingGoal) => {
+    const raised = parseFloat(ethers.utils.formatEther(amountRaised));
+    const goal = parseFloat(ethers.utils.formatEther(fundingGoal));
+    return (raised / goal) * 100;
+  };
 
+  return (
+    <div className='page-container fade-in'>
+      <Nav />
+      <Header />
+      
       {/* Featured Campaigns Section */}
-      <Container maxW={'7xl'} py={16}>
+      <Container maxW={'7xl'} py={16} bg="transparent">
         <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'} mb={12}>
           <Heading fontSize={'3xl'}>Campañas Destacadas</Heading>
           <Text color={'gray.600'} fontSize={'xl'}>
@@ -154,17 +112,13 @@ const Home = () => {
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
             {featuredCampaigns.map((campaign) => {
               const status = getCampaignStatus(campaign);
-              const progress = (campaign.amountRaised.toNumber() / campaign.fundingGoal.toNumber()) * 100;
+              const progress = calculateProgress(campaign.amountRaised, campaign.fundingGoal);
               
               return (
                 <Box
                   key={campaign.id}
-                  bg={useColorModeValue('white', 'gray.800')}
-                  boxShadow={'xl'}
-                  rounded={'md'}
-                  overflow={'hidden'}
+                  className="modern-card"
                   p={6}
-                  _hover={{ transform: 'translateY(-5px)', transition: 'all 0.3s ease' }}
                 >
                   <VStack align="stretch" spacing={4}>
                     <HStack justify="space-between">
@@ -187,6 +141,7 @@ const Home = () => {
                     <Button
                       as={RouterLink}
                       to={`/campaigns/${campaign.id}`}
+                      className="modern-button"
                       colorScheme="blue"
                       variant="outline"
                     >
@@ -199,7 +154,11 @@ const Home = () => {
           </SimpleGrid>
         )}
       </Container>
-    </Box>
+
+      <About />
+      <Contact />
+      <Footer />
+    </div>
   );
 };
 
